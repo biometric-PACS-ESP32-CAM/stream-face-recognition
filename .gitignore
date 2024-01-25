@@ -1,2 +1,4 @@
-my_env/
-_pycache_/
+venv/
+__pycache__/
+attendance/
+image_folder/
