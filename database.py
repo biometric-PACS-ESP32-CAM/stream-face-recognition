@@ -15,6 +15,7 @@ def db_create_table():
                                 "   `photo` blob,"
                                 "   `state` varchar(60) DEFAULT 'start',"
                                 "   `auth` varchar(60) DEFAULT 'no',"
+                                "   `time` float FLOAT NOT NULL DEFAULT '0',"
                                 "   PRIMARY KEY (`id`)"
                                 ")  ENGINE=InnoDB" )
                 connection.commit()
@@ -189,6 +190,29 @@ def db_get_userid_list():
                 for res in result:
                     userid_list.append(res[0])
                 return userid_list
+    except Error as e:
+        print(e)
+
+#========================================================================================
+
+# Установить время последнего определения пользователя программой и получить его
+def db_set_time(time, user_id):
+    try:
+        with connect(**config_connection) as connection:
+            with connection.cursor() as cursor:
+                cursor.execute("UPDATE users SET `time` = %s WHERE `user_id` = %s", (time, user_id,))
+                connection.commit()
+    except Error as e:
+        print(e)
+
+def db_get_time(user_id):
+    try:
+        with connect(**config_connection) as connection:
+            with connection.cursor(buffered=True) as cursor:
+                cursor.execute( "SELECT `time` FROM users WHERE `user_id` = %s", (user_id,))
+                result = cursor.fetchone()
+                time = float(result[0])
+                return time
     except Error as e:
         print(e)
 

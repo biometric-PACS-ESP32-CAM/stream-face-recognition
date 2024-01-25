@@ -7,6 +7,7 @@ import os
 from datetime import datetime
 import face_recognition
 import database as db
+from time import monotonic
 
 path = 'image_folder'
 url='http://192.168.8.101/cam-hi.jpg'
@@ -80,14 +81,17 @@ while True:
 
         if matches[matchIndex]:
             # --------------------------------------------------------------------------------------
+
             p_id = classNames[matchIndex].upper()
             names = db.db_get_names(p_id)
             p_status = db.db_get_status(p_id)
-            # user_id=333666&name=Ivan&surname=Mischenko&status_enter=out
-            data_str = f"user_id={p_id}&name={names[0]}&surname={names[1]}&status_enter={p_status}"
-            print(data_str)
-            r = requests.post('http://192.168.8.101:80/data', data=data_str, headers={'Content-Type': 'application/x-www-form-urlencoded'})
-            print(r.text)
+            if monotonic() - db.db_get_time(p_id) > 10:
+                db.db_set_time(monotonic(), p_id)
+                data_str = f"user_id={p_id}&name={names[0]}&surname={names[1]}&status_enter={p_status}"
+                r = requests.post('http://192.168.8.101:80/data', data=data_str, headers={'Content-Type': 'application/x-www-form-urlencoded'})
+                print(r.text)
+                db.db_chng_status(p_id)
+
             # --------------------------------------------------------------------------------------
             name = f'{names[0]} {names[1]}'
             print(name) #commented
