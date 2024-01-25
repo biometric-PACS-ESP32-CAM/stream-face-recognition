@@ -22,6 +22,7 @@ else:
 users_id = db.db_get_userid_list()
 for user_id in users_id:
     db.db_get_photo(path, user_id)
+    db.db_set_time(0, user_id)
 
 images = []
 classNames = []
