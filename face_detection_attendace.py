@@ -1,5 +1,6 @@
 import pandas as pd
 import cv2
+import requests
 import urllib.request
 import numpy as np
 import os
@@ -78,10 +79,16 @@ while True:
         matchIndex = np.argmin(faceDis)
 
         if matches[matchIndex]:
-            # send_open_signal()
             # --------------------------------------------------------------------------------------
-            name = classNames[matchIndex].upper()
-            names = db.db_get_names(name)
+            p_id = classNames[matchIndex].upper()
+            names = db.db_get_names(p_id)
+            p_status = db.db_get_status(p_id)
+            # user_id=333666&name=Ivan&surname=Mischenko&status_enter=out
+            data_str = f"user_id={p_id}&name={names[0]}&surname={names[1]}&status_enter={p_status}"
+            print(data_str)
+            r = requests.post('http://192.168.8.101:80/data', data=data_str, headers={'Content-Type': 'application/x-www-form-urlencoded'})
+            print(r.text)
+            # --------------------------------------------------------------------------------------
             name = f'{names[0]} {names[1]}'
             print(name) #commented
             y1, x2, y2, x1 = faceLoc
