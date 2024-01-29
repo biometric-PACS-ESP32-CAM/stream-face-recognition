@@ -10,7 +10,7 @@ import database as db
 from time import monotonic
 
 path = 'image_folder'
-url='http://192.168.8.101/cam-hi.jpg'
+url='http://192.168.8.102/cam-hi.jpg'
 
 if 'Attendance.csv' in os.listdir(os.path.join(os.getcwd(),'attendance')):
     print("there iss..")
