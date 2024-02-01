@@ -3,3 +3,4 @@ __pycache__/
 attendance/
 image_folder/
 Attendance.csv
+db_config.py
