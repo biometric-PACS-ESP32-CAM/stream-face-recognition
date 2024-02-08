@@ -1,10 +1,8 @@
-import pandas as pd
 import cv2
 import requests
 import urllib.request
 import numpy as np
 import os
-from datetime import datetime
 import face_recognition
 import database as db
 from time import monotonic
