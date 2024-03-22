@@ -63,7 +63,7 @@ while True:
             if monotonic() - db.db_get_time(p_id) > 2:
                 db.db_set_time(monotonic(), p_id)
                 data_str = f"user_id={p_id}&name={names[0]}&surname={names[1]}&status_enter={p_status}"
-                r = requests.post('http://192.168.8.102:80/data', data=data_str, headers={'Content-Type': 'application/x-www-form-urlencoded'})
+                r = requests.post('http://192.168.8.100:80/data', data=data_str, headers={'Content-Type': 'application/x-www-form-urlencoded'})
                 print(r.text)
                 if (r.text != "door opened"):
                     db.db_chng_status(p_id)
