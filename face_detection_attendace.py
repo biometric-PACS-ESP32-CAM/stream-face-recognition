@@ -8,7 +8,7 @@ import database as db
 from time import monotonic
 
 path = 'image_folder'
-url='http://192.168.8.102/cam-hi.jpg'
+url='http://192.168.8.101/cam-hi.jpg'
     
 users_id = db.db_get_userid_list()
 for user_id in users_id:
@@ -60,12 +60,13 @@ while True:
             p_id = classNames[matchIndex].upper()
             names = db.db_get_names(p_id)
             p_status = db.db_get_status(p_id)
-            if monotonic() - db.db_get_time(p_id) > 10:
+            if monotonic() - db.db_get_time(p_id) > 2:
                 db.db_set_time(monotonic(), p_id)
                 data_str = f"user_id={p_id}&name={names[0]}&surname={names[1]}&status_enter={p_status}"
-                r = requests.post('http://192.168.8.100:80/data', data=data_str, headers={'Content-Type': 'application/x-www-form-urlencoded'})
+                r = requests.post('http://192.168.8.102:80/data', data=data_str, headers={'Content-Type': 'application/x-www-form-urlencoded'})
                 print(r.text)
-                db.db_chng_status(p_id)
+                if (r.text != "door opened"):
+                    db.db_chng_status(p_id)
 
             # --------------------------------------------------------------------------------------
             name = f'{names[0]} {names[1]}'
